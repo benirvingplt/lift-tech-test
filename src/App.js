@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './style/App.css';
+
+import Building from './components/Building';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Building />
+        <div>
+          <p>Call a lift by pressing the button on the desired floor.</p>
+          <p>0 lift not at floor</p>
+          <p>1 lift at floor but has no further destination</p>
+          <p>2 lift at floor and doors are opened</p>
+        </div>
       </div>
     );
   }

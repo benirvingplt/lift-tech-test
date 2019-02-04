@@ -1,0 +1,21 @@
+.floor {
+    display: grid;
+    grid-template-columns: 100px 150px 300px;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.floor-area {
+    text-align: center;
+    border-bottom: 5px solid white;
+
+    padding: 5px
+}
+
+.call-area, .lift-area {
+    border-right: 5px solid white;
+}
+
+.lift-area .lift {
+    display: inline;
+}

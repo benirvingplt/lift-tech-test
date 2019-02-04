@@ -11,6 +11,7 @@ const defaultLiftState = {
 }
 
 export default class Building extends Component {
+    // NOTE: The state and methods are suggestions. Feel free to change these at suits your needs.
     state = {
         lifts: [
             { ...defaultLiftState, number: 0 },
@@ -19,38 +20,22 @@ export default class Building extends Component {
         ]
     }
 
-    callLift = async (destinationFloor) => {
-        console.log('Lift called to floor', destinationFloor);
-        const chosenLift = await this.getClosestLift(destinationFloor);
-        console.log('chosenLift', chosenLift.number);
-        this.controllLift(destinationFloor, chosenLift)
+    /**
+     * (You will need to change the code to ensure 'this' works in this method)
+     * Call the lift to the specified floor
+     * @param {Number} destinationFloor 
+     */
+    callLift(destinationFloor) {
+        // getClosesLift()
+        // controllLift()
     }
 
-    async getClosestLift(destinationFloor) {
-        const { lifts } = this.state;
-
-        let chosenLift;
-        let bestLiftDistance = Infinity;
-
-        for (let lift of lifts) {
-            // If lift currently at the floor and its not in motion, use that lift
-            if (lift.atFloor === destinationFloor && !lift.inMotion) {
-                chosenLift = lift;
-                break;
-            }
-
-            // Calculate the distance metric of each lift
-            const liftDistance = (Math.abs(lift.atFloor) * (lift.inMotion ? 2 : 1));
-
-            // If this lifts distance metric is better than the current best lift distance metric
-            // then update the best current distance and set this lift as the current chosen lift
-            if (liftDistance < bestLiftDistance) {
-                bestLiftDistance = liftDistance;
-                chosenLift = lift;
-            }
-        }
-
-        return chosenLift;
+    /**
+     * Return the best lift to use
+     * @param {Number} destinationFloor 
+     */
+    getClosestLift(destinationFloor) {
+        return;
     }
 
     /**
@@ -60,53 +45,15 @@ export default class Building extends Component {
      * @param {Object} lift 
      */
     controllLift(destinationFloor, liftToUpdate) {
-        const { lifts} = this.state;
-        const liftNumber = liftToUpdate.number;
-        const newDirection = destinationFloor > liftToUpdate.atFloor ? 'up' : 'down';
-    
-        lifts[liftNumber] = {
-            ...liftToUpdate,
-            destinationFloor,
-            inMotion: true,
-            directionOfMotion: newDirection,
-        };
-
-        this.setState({ lifts }, () => {
-            const moveLiftTimer = setInterval(() => {
-                const updatedLifts = this.state.lifts;
-                const lift = updatedLifts[liftNumber]
-                if (lift.atFloor === destinationFloor) {
-                    clearInterval(moveLiftTimer);
-                    updatedLifts[liftNumber] = {
-                        ...lift,
-                        inMotion: false,
-                        directionOfMotion: null,
-                    }
-                    this.setState({ lifts: updatedLifts});
-                } else {
-                    this.moveLift(liftNumber);
-                }
-            }, 1000);
-        });
+        // moveLift()
     }
 
     /**
      * Set the state of the chosen lift to increment/decrement its floor by 1
-     * @param {*} lift 
+     * @param {Number} liftNumber 
      */
     moveLift(liftNumber) {
-        const { lifts } = this.state;
-        const liftToUpdate = lifts[liftNumber];
-        const newFloor = liftToUpdate.directionOfMotion === 'up'
-            ? liftToUpdate.atFloor + 1
-            : liftToUpdate.atFloor - 1;
 
-        lifts[liftToUpdate.number] = {
-            ...liftToUpdate,
-            atFloor: newFloor
-        };
-
-        this.setState({ lifts });
     }
 
     render() {

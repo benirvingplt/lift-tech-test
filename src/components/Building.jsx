@@ -40,7 +40,7 @@ export default class Building extends Component {
             }
 
             // Calculate the distance metric of each lift
-            const liftDistance = (Math.abs(lift.atFloor) * (lift.inMotion ? 2 : 1));
+            const liftDistance = (Math.abs(lift.atFloor - destinationFloor) * (lift.inMotion ? 3 : 1));
 
             // If this lifts distance metric is better than the current best lift distance metric
             // then update the best current distance and set this lift as the current chosen lift

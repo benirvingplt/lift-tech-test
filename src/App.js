@@ -10,9 +10,9 @@ class App extends Component {
         <Building />
         <div>
           <p>Call a lift by pressing the button on the desired floor.</p>
-          <p>0 lift not at floor</p>
-          <p>1 lift at floor but has no further destination</p>
-          <p>2 lift at floor and doors are opened</p>
+          <p>red =  lift not at floor</p>
+          <p>amber =  lift at floor but has no further destination</p>
+          <p>green = lift at floor and doors are opened</p>
         </div>
       </div>
     );

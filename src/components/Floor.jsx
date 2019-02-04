@@ -15,16 +15,16 @@ export default class Building extends Component {
                                 {
                                     lift.atFloor === this.props.floorNumber &&
                                     lift.destinationFloor === this.props.floorNumber &&
-                                    2
+                                    <div className="green-icon"></div>
                                 }
                                 {
                                     lift.atFloor === this.props.floorNumber &&
                                     lift.destinationFloor !== this.props.floorNumber &&
-                                    1
+                                    <div className="amber-icon"></div>
                                 }
                                 {
                                     lift.atFloor !== this.props.floorNumber &&
-                                    0
+                                    <div className="red-icon"></div>
                                 }
                             </div>
                         ))

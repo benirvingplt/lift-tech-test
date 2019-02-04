@@ -17,5 +17,25 @@
 }
 
 .lift-area .lift {
-    display: inline;
+    display: inline-block;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.green-icon {
+    background-color: green;
+    width: 10px;
+    height: 10px;
+}
+
+.amber-icon {
+    background-color: orange;
+    width: 10px;
+    height: 10px;
+}
+
+.red-icon {
+    background-color: red;
+    width: 10px;
+    height: 10px;
 }

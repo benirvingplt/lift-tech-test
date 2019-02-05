@@ -26,34 +26,7 @@ export default class Building extends Component {
      * @param {Number} destinationFloor 
      */
     callLift(destinationFloor) {
-        // getClosesLift()
-        // controllLift()
-    }
-
-    /**
-     * Return the best lift to use
-     * @param {Number} destinationFloor 
-     */
-    getClosestLift(destinationFloor) {
         return;
-    }
-
-    /**
-     * Update the state to show the chosen lift is now begun moving to the selected floor
-     * Call 'moveLift' method every second until lift has arrived
-     * @param {Number} destinationFloor 
-     * @param {Object} lift 
-     */
-    controllLift(destinationFloor, liftToUpdate) {
-        // moveLift()
-    }
-
-    /**
-     * Set the state of the chosen lift to increment/decrement its floor by 1
-     * @param {Number} liftNumber 
-     */
-    moveLift(liftNumber) {
-
     }
 
     render() {

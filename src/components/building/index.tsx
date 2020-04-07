@@ -7,7 +7,7 @@ export interface Lift {
     inMotion: boolean;
     directionOfMotion: string | null;
     destinationFloor: number | null;
-    id?: number;
+    id: number;
 }
 
 interface BuildingProps {};
@@ -22,6 +22,7 @@ const defaultLiftState: Lift = {
     inMotion: false,
     directionOfMotion: null,
     destinationFloor: null,
+    id: 0,
 }
 
 export default class Building extends Component<BuildingProps, BuildingState> {
@@ -47,26 +48,8 @@ export default class Building extends Component<BuildingProps, BuildingState> {
      * @param {Number} destinationFloor 
      */
     callLift(destinationFloor: number) {
-        const { lifts } = this.state;
-        const updatedLifts = [...lifts];
         const nearestLift = this.getNearestLift(destinationFloor);
-
-        console.log(destinationFloor, nearestLift);
-
-        const isGoingUp = nearestLift.atFloor < destinationFloor;
-
-        updatedLifts[nearestLift.id] = {
-            ...nearestLift,
-            directionOfMotion: isGoingUp
-                ? "up"
-                : "down",
-            atFloor: destinationFloor,
-            destinationFloor,
-        };
-
-        this.setState({
-            lifts: updatedLifts,
-        }, () => this.moveLift(nearestLift.id));
+        this.startLift(nearestLift, destinationFloor);
     }
 
     getNearestLift(destinationFloor: number) {
@@ -84,6 +67,40 @@ export default class Building extends Component<BuildingProps, BuildingState> {
         ));
     }
 
+    startLift(lift: Lift, destinationFloor: number) {
+        const { lifts } = this.state;
+        const updatedLifts = [...lifts];
+        const isGoingUp = lift.atFloor < destinationFloor;
+
+        updatedLifts[lift.id] = {
+            ...lift,
+            inMotion: true,
+            directionOfMotion: isGoingUp
+                ? "up"
+                : "down",
+            destinationFloor,
+        };
+
+        this.setState({
+            lifts: updatedLifts,
+        }, () => this.moveLift(lift.id));
+    }
+
+    stopLift(lift: Lift) {
+        const { lifts } = this.state;
+        const updatedLifts = [...lifts];
+
+        updatedLifts[lift.id] = {
+            ...lift,
+            inMotion: false,
+            directionOfMotion: null,
+        };
+
+        this.setState({
+            lifts: updatedLifts,
+        }, () => console.log(this.state.lifts));
+    }
+
     isLiftAtDestination(id: number) {
         const { lifts } = this.state;
         const currentLift = lifts[id];
@@ -94,18 +111,10 @@ export default class Building extends Component<BuildingProps, BuildingState> {
     moveLift(id: number) {
         const { lifts } = this.state;
         const updatedLifts = [...lifts];
-        const liftToMove = lifts[0];
+        const liftToMove = lifts[id];
 
         if (this.isLiftAtDestination(id)) {
-            updatedLifts[id] = {
-                ...liftToMove,
-                inMotion: false,
-                directionOfMotion: null,
-            }
-
-            this.setState({
-                lifts: updatedLifts,
-            }, () => console.log(this.state.lifts));
+            this.stopLift(liftToMove);
         } else {
             updatedLifts[id] = {
                 ...liftToMove,
@@ -124,8 +133,6 @@ export default class Building extends Component<BuildingProps, BuildingState> {
             });
         }
     }
-        
-
 
     render() {
         return (

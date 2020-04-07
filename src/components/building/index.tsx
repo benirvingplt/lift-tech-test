@@ -30,8 +30,6 @@ export default class Building extends Component<BuildingProps, BuildingState> {
         super(props);
 
         this.callLift = this.callLift.bind(this);
-        this.isLiftAtDestination = this.isLiftAtDestination.bind(this);
-        this.moveLift = this.moveLift.bind(this);
     }
     // NOTE: The state and methods are suggestions. Feel free to change these at suits your needs.
     state = {

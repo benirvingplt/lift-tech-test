@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import '../style/Building.css';
 
-import Floor from './floor';
+import UI from "./building.ui";
 
 export interface Lift {
     atFloor: number;
@@ -49,35 +48,40 @@ export default class Building extends Component<BuildingProps, BuildingState> {
      */
     callLift(destinationFloor: number) {
         const { lifts } = this.state;
+        const updatedLifts = [...lifts];
+        const nearestLift = this.getNearestLift(destinationFloor);
+
+        console.log(destinationFloor, nearestLift);
+
+        const isGoingUp = nearestLift.atFloor < destinationFloor;
+
+        updatedLifts[nearestLift.id] = {
+            ...nearestLift,
+            directionOfMotion: isGoingUp
+                ? "up"
+                : "down",
+            atFloor: destinationFloor,
+            destinationFloor,
+        };
+
+        this.setState({
+            lifts: updatedLifts,
+        }, () => this.moveLift(nearestLift.id));
+    }
+
+    getNearestLift(destinationFloor: number) {
+        const { lifts } = this.state;
 
         // Find the lifts that's not in motion
         const stationaryLifts = lifts.filter((lift) => lift.inMotion === false);
 
 
         // Find the nearest lift closest to the destination floor
-        const nearestLift = stationaryLifts.reduce((prev, curr) => (
+        return stationaryLifts.reduce((prev, curr) => (
             Math.abs(curr.atFloor - destinationFloor) < (Math.abs(prev.atFloor - destinationFloor))
                 ? curr
                 : prev 
         ));
-
-        console.log(nearestLift.id);
-
-        const isGoingUp = nearestLift.atFloor < destinationFloor;
-
-        lifts[nearestLift.id] = {
-            ...nearestLift,
-            directionOfMotion: isGoingUp
-                ? "up"
-                : "down",
-            destinationFloor,
-        };
-
-        console.log(JSON.stringify(lifts));
-
-        this.setState({
-            lifts,
-        }, () => this.moveLift(nearestLift.id));
     }
 
     isLiftAtDestination(id: number) {
@@ -89,21 +93,21 @@ export default class Building extends Component<BuildingProps, BuildingState> {
 
     moveLift(id: number) {
         const { lifts } = this.state;
+        const updatedLifts = [...lifts];
         const liftToMove = lifts[0];
 
         if (this.isLiftAtDestination(id)) {
-            lifts[id] = {
+            updatedLifts[id] = {
                 ...liftToMove,
                 inMotion: false,
                 directionOfMotion: null,
-                destinationFloor: null,
             }
 
             this.setState({
-                lifts,
+                lifts: updatedLifts,
             }, () => console.log(this.state.lifts));
         } else {
-            lifts[id] = {
+            updatedLifts[id] = {
                 ...liftToMove,
                 inMotion: true,
                 atFloor: liftToMove.directionOfMotion === "up"
@@ -112,7 +116,7 @@ export default class Building extends Component<BuildingProps, BuildingState> {
             }
 
             this.setState({
-                lifts,
+                lifts: updatedLifts,
             }, () => {
                 setTimeout(() => {
                     this.moveLift(id);
@@ -125,18 +129,10 @@ export default class Building extends Component<BuildingProps, BuildingState> {
 
     render() {
         return (
-            <div className="building">
-                {
-                    [0,1,2,3,4,5,6,7,8,9].reverse().map(floor => (
-                        <Floor
-                            key={`floor-id-${floor}`}
-                            currentFloor={floor}
-                            callLift={this.callLift}
-                            lifts={this.state.lifts}
-                        />
-                    ))
-                }
-            </div>
+            <UI
+                callLift={this.callLift}
+                lifts={this.state.lifts}
+            />
         );
     }
 }

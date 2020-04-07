@@ -98,7 +98,7 @@ export default class Building extends Component<BuildingProps, BuildingState> {
 
         this.setState({
             lifts: updatedLifts,
-        }, () => console.log(this.state.lifts));
+        });
     }
 
     isLiftAtDestination(id: number) {
